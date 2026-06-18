@@ -1,0 +1,848 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Studio Name</title>
+  <meta name="description" content="Independent Design Studio." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+
+
+    :root {
+      --bg: #0a0a0a;
+      --fg: #f0ede8;
+      --fg-dim: rgba(240,237,232,0.38);
+      --fg-mid: rgba(240,237,232,0.62);
+      --accent: #f0ede8;
+      --serif: Georgia, 'Times New Roman', serif;
+      --sans: 'Inter', system-ui, sans-serif;
+      --cursor-size: 10px;
+    }
+
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+
+    html { scroll-behavior: smooth; }
+
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 1.5;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+
+    /* ── Custom cursor ── */
+    #cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--cursor-size);
+      height: var(--cursor-size);
+      background: var(--fg);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease, background 0.2s ease;
+      mix-blend-mode: difference;
+    }
+    #cursor.hover {
+      width: 44px;
+      height: 44px;
+      background: rgba(240,237,232,0.15);
+      border: 1px solid rgba(240,237,232,0.55);
+      mix-blend-mode: normal;
+    }
+    #cursor.click { transform: translate(-50%, -50%) scale(0.7); }
+
+
+    /* ── Header / Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 40px;
+      mix-blend-mode: difference;
+    }
+
+
+    .nav-logo {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg);
+      text-decoration: none;
+    }
+    .nav-logo sup {
+      font-size: 8px;
+      vertical-align: super;
+    }
+
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--fg);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 40px 56px;
+      overflow: hidden;
+    }
+
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 60% 40%, #1a1510 0%, #0a0a0a 70%);
+    }
+
+
+    .hero-marquee-wrap {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-58%);
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .hero-marquee {
+      display: flex;
+      white-space: nowrap;
+      will-change: transform;
+      animation: marquee 28s linear infinite;
+    }
+    .hero-marquee span {
+      font-size: clamp(90px, 13vw, 180px);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(240,237,232,0.07);
+      padding-right: 0.35em;
+      font-family: var(--sans);
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+
+    .hero-tagline {
+      max-width: 480px;
+    }
+    .hero-tagline h1 {
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 300;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+    }
+    .hero-tagline h1 em {
+      font-style: italic;
+      color: var(--fg-mid);
+    }
+
+
+    .hero-meta {
+      text-align: right;
+    }
+    .hero-meta p {
+      font-size: 11px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      line-height: 2;
+    }
+
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 56px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.35;
+    }
+    .scroll-hint span {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: var(--fg);
+      transform-origin: top;
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%,100% { scaleY: 0; opacity: 0; }
+      50% { scaleY: 1; opacity: 1; }
+    }
+
+
+    /* ── Section labels ── */
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      margin-bottom: 20px;
+    }
+
+
+    /* ── Work grid ── */
+    .work {
+      padding: 0 40px 120px;
+    }
+
+
+    .work-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 80px 0 60px;
+      border-top: 1px solid rgba(240,237,232,0.08);
+    }
+    .work-header h2 {
+      font-size: clamp(32px, 4vw, 54px);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+    }
+    .work-count {
+      font-size: 11px;
+      color: var(--fg-dim);
+      letter-spacing: 0.07em;
+    }
+
+
+    .projects-list {
+      list-style: none;
+    }
+
+
+    .project-item {
+      border-top: 1px solid rgba(240,237,232,0.08);
+      transition: border-color 0.3s;
+    }
+    .project-item:last-child { border-bottom: 1px solid rgba(240,237,232,0.08); }
+
+
+    .project-link {
+      display: grid;
+      grid-template-columns: 60px 1fr auto auto;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 0;
+      text-decoration: none;
+      color: var(--fg);
+      transition: opacity 0.2s;
+    }
+
+
+    .projects-list:hover .project-item .project-link { opacity: 0.3; }
+    .project-item:hover .project-link { opacity: 1 !important; }
+    .project-item:hover { border-color: rgba(240,237,232,0.2); }
+
+
+    .project-num {
+      font-size: 10px;
+      color: var(--fg-dim);
+      letter-spacing: 0.06em;
+      font-variant-numeric: tabular-nums;
+    }
+
+
+    .project-title {
+      font-size: clamp(20px, 2.5vw, 32px);
+      font-weight: 300;
+      letter-spacing: -0.015em;
+      line-height: 1;
+    }
+
+
+    .project-tags {
+      display: flex;
+      gap: 10px;
+    }
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      border: 1px solid rgba(240,237,232,0.15);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+
+    .project-year {
+      font-size: 11px;
+      color: var(--fg-dim);
+      letter-spacing: 0.06em;
+      min-width: 42px;
+      text-align: right;
+    }
+
+
+    /* Project hover preview */
+    .preview-img {
+      position: fixed;
+      pointer-events: none;
+      z-index: 50;
+      width: 340px;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+    }
+    .preview-img.visible { opacity: 1; }
+
+
+    /* ── About ── */
+    .about {
+      padding: 100px 40px;
+      border-top: 1px solid rgba(240,237,232,0.08);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+
+    .about-left {}
+    .about-left p {
+      font-size: clamp(22px, 2.8vw, 38px);
+      font-weight: 300;
+      line-height: 1.3;
+      letter-spacing: -0.015em;
+      color: var(--fg-mid);
+    }
+    .about-left p strong { color: var(--fg); font-weight: 400; }
+
+
+    .about-right {
+      padding-top: 8px;
+    }
+    .about-right p {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--fg-dim);
+      max-width: 440px;
+      margin-bottom: 24px;
+    }
+    .about-clients {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 40px;
+    }
+    .client-pill {
+      font-size: 10px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      border: 1px solid rgba(240,237,232,0.12);
+      padding: 5px 12px;
+      border-radius: 100px;
+    }
+
+
+    /* ── Awards strip ── */
+    .awards {
+      padding: 60px 40px;
+      border-top: 1px solid rgba(240,237,232,0.08);
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      overflow-x: auto;
+    }
+    .awards::-webkit-scrollbar { display: none; }
+
+
+    .award-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .award-name {
+      font-size: 14px;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .award-detail {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+    }
+
+
+    .award-divider {
+      width: 1px;
+      height: 40px;
+      background: rgba(240,237,232,0.1);
+      flex-shrink: 0;
+    }
+
+
+    /* ── Contact / Footer ── */
+    .contact {
+      padding: 100px 40px;
+      border-top: 1px solid rgba(240,237,232,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+
+    .contact-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+
+    .contact-heading {
+      font-size: clamp(52px, 8vw, 120px);
+      font-weight: 300;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+    }
+    .contact-heading a {
+      color: var(--fg);
+      text-decoration: none;
+      display: block;
+      transition: opacity 0.2s;
+    }
+    .contact-heading a:hover { opacity: 0.65; }
+
+
+    .contact-info {
+      text-align: right;
+    }
+    .contact-info p {
+      font-size: 12px;
+      color: var(--fg-dim);
+      letter-spacing: 0.06em;
+      line-height: 2;
+    }
+    .contact-info a {
+      color: var(--fg);
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .contact-info a:hover { opacity: 1; }
+
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 40px;
+      border-top: 1px solid rgba(240,237,232,0.08);
+    }
+    .footer-bottom p {
+      font-size: 11px;
+      color: var(--fg-dim);
+      letter-spacing: 0.06em;
+    }
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+    .footer-links a {
+      font-size: 11px;
+      color: var(--fg-dim);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--fg); }
+
+
+    /* ── Noise overlay ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 200;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+
+    /* ── Reveal animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      nav { padding: 22px 24px; }
+      .nav-links { gap: 20px; }
+      .hero { padding: 0 24px 48px; }
+      .work { padding: 0 24px 80px; }
+      .work-header { padding: 60px 0 40px; }
+      .project-link { grid-template-columns: 40px 1fr auto; gap: 14px; }
+      .project-tags { display: none; }
+      .about { grid-template-columns: 1fr; gap: 48px; padding: 72px 24px; }
+      .awards { padding: 48px 24px; }
+      .contact { padding: 72px 24px; }
+      .contact-top { flex-direction: column; align-items: flex-start; gap: 40px; }
+      .contact-info { text-align: left; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 16px; }
+      body { cursor: auto; }
+      #cursor { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+
+
+  <!-- Preview image for project hover -->
+  <img id="previewImg" class="preview-img" src="" alt="" />
+
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">Your Studio<sup>®</sup></a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">Studio</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-marquee-wrap">
+      <div class="hero-marquee">
+        <span>Your Brand</span>
+        <span>Studio</span>
+        <span>Your Brand</span>
+        <span>Studio</span>
+        <span>Your Brand</span>
+        <span>Studio</span>
+        <span>Your Brand</span>
+        <span>Studio</span>
+      </div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tagline">
+        <h1>We create things that<br>make people <em>feel something.</em></h1>
+      </div>
+      <div class="hero-meta">
+        <p>City · Country</p>
+        <p>Est. 2024</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Work -->
+  <section class="work" id="work">
+    <div class="work-header reveal">
+      <h2>Selected Work</h2>
+      <span class="work-count">6 Projects</span>
+    </div>
+
+
+    <ul class="projects-list">
+      <li class="project-item">
+        <a href="#" class="project-link"
+          data-preview="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=680&q=80">
+          <span class="project-num">01</span>
+          <span class="project-title">Project One — Description</span>
+          <span class="project-tags">
+            <span class="tag">Brand</span>
+            <span class="tag">Web</span>
+          </span>
+          <span class="project-year">2024</span>
+        </a>
+      </li>
+      <li class="project-item">
+        <a href="#" class="project-link"
+          data-preview="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=680&q=80">
+          <span class="project-num">02</span>
+          <span class="project-title">Project Two — Description</span>
+          <span class="project-tags">
+            <span class="tag">Campaign</span>
+            <span class="tag">Digital</span>
+          </span>
+          <span class="project-year">2024</span>
+        </a>
+      </li>
+      <li class="project-item">
+        <a href="#" class="project-link"
+          data-preview="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=680&q=80">
+          <span class="project-num">03</span>
+          <span class="project-title">Project Three — Description</span>
+          <span class="project-tags">
+            <span class="tag">Interaction</span>
+            <span class="tag">Motion</span>
+          </span>
+          <span class="project-year">2023</span>
+        </a>
+      </li>
+      <li class="project-item">
+        <a href="#" class="project-link"
+          data-preview="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=680&q=80">
+          <span class="project-num">04</span>
+          <span class="project-title">Project Four — Description</span>
+          <span class="project-tags">
+            <span class="tag">E-Commerce</span>
+            <span class="tag">UX</span>
+          </span>
+          <span class="project-year">2023</span>
+        </a>
+      </li>
+      <li class="project-item">
+        <a href="#" class="project-link"
+          data-preview="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=680&q=80">
+          <span class="project-num">05</span>
+          <span class="project-title">Project Five — Description</span>
+          <span class="project-tags">
+            <span class="tag">Launch</span>
+            <span class="tag">3D</span>
+          </span>
+          <span class="project-year">2023</span>
+        </a>
+      </li>
+      <li class="project-item">
+        <a href="#" class="project-link"
+          data-preview="https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=680&q=80">
+          <span class="project-num">06</span>
+          <span class="project-title">Project Six — Description</span>
+          <span class="project-tags">
+            <span class="tag">Platform</span>
+            <span class="tag">UX/UI</span>
+          </span>
+          <span class="project-year">2022</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="about-left reveal">
+      <p class="section-label">Studio</p>
+      <p>
+        <strong>Your Studio is a creative studio</strong>
+        focused on design, branding, and
+        <em style="color:var(--fg-mid); font-style:italic">digital experiences.</em>
+      </p>
+    </div>
+    <div class="about-right reveal">
+      <p>
+        Based in Your City, we blend design, creative concepts
+        and modern technologies to deliver effective creative direction,
+        brand strategy, and digital experiences.
+      </p>
+      <p>
+        We believe great work happens at the intersection of craft
+        and code. Every detail is carefully considered.
+      </p>
+      <p class="section-label" style="margin-bottom:12px;">Clients include</p>
+      <div class="about-clients">
+        <span class="client-pill">Client A</span>
+        <span class="client-pill">Client B</span>
+        <span class="client-pill">Client C</span>
+        <span class="client-pill">Client D</span>
+        <span class="client-pill">Client E</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Awards -->
+  <div class="awards reveal">
+    <div class="award-item">
+      <span class="award-name">Award Name</span>
+      <span class="award-detail">Organization · 2024</span>
+    </div>
+    <div class="award-divider"></div>
+    <div class="award-item">
+      <span class="award-name">Award Name</span>
+      <span class="award-detail">Organization · 2023</span>
+    </div>
+    <div class="award-divider"></div>
+    <div class="award-item">
+      <span class="award-name">Award Name</span>
+      <span class="award-detail">Organization · 2023</span>
+    </div>
+  </div>
+
+
+  <!-- Contact / Footer -->
+  <footer class="contact" id="contact">
+    <div class="contact-top">
+      <div class="contact-heading reveal">
+        <a href="mailto:hello@yourstudio.com">Say<br>hello.</a>
+      </div>
+      <div class="contact-info reveal">
+        <p>hello@yourstudio.com</p>
+        <p style="margin-top:16px;">
+          <a href="#">Instagram</a><br>
+          <a href="#">LinkedIn</a><br>
+          <a href="#">Twitter</a>
+        </p>
+        <p style="margin-top:16px;">
+          Your City, Country
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Your Studio — All rights reserved</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    // ── Cursor ──
+    const cursor = document.getElementById('cursor');
+    let mx = 0, my = 0, cx = 0, cy = 0;
+
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+    });
+
+
+    (function animateCursor() {
+      cx += (mx - cx) * 0.14;
+      cy += (my - cy) * 0.14;
+      cursor.style.left = cx + 'px';
+      cursor.style.top  = cy + 'px';
+      requestAnimationFrame(animateCursor);
+    })();
+
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+    document.addEventListener('mousedown', () => cursor.classList.add('click'));
+    document.addEventListener('mouseup',   () => cursor.classList.remove('click'));
+
+
+    // ── Project hover preview ──
+    const preview = document.getElementById('previewImg');
+    let previewX = 0, previewY = 0;
+
+
+    document.addEventListener('mousemove', e => {
+      previewX = e.clientX; previewY = e.clientY;
+      preview.style.left = previewX + 'px';
+      preview.style.top  = previewY + 'px';
+    });
+
+
+    document.querySelectorAll('.project-link[data-preview]').forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        preview.src = link.dataset.preview;
+        preview.classList.add('visible');
+      });
+      link.addEventListener('mouseleave', () => {
+        preview.classList.remove('visible');
+      });
+    });
+
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+    // ── Nav blend scroll ──
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        nav.style.mixBlendMode = 'normal';
+      } else {
+        nav.style.mixBlendMode = 'difference';
+      }
+    });
+  </script>
+</body>
+</html>
